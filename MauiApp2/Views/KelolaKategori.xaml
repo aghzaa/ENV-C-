@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp2.Views.KelolaKategori"
+             xmlns:vm="clr-namespace:MauiApp2.ViewModels"
+             xmlns:model="clr-namespace:MauiApp2.Models"
+             x:DataType="vm:KategoriViewModel"
+             >
+    <Grid>
+        <Grid RowDefinitions="Auto,Auto,*" RowSpacing="16" Padding="16">
+            <Border Grid.Row="0"
+                    HeightRequest="100"
+                    StrokeThickness="0"
+                    HorizontalOptions="Center">
+
+                <FlexLayout Direction="Row"
+                            JustifyContent="SpaceBetween"
+                            AlignItems="Center"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Padding="20,0">
+
+                    <Grid RowDefinitions="Auto,Auto" RowSpacing="8">
+                        <Label Grid.Row="0" Text="🎫 Kelola Kategori"
+                               FontSize="20"
+                               FontAttributes="Bold"/>
+                        <Label Grid.Row="1" Text="Kelola Kategori barang"
+                               FontAttributes="Bold"/>
+                    </Grid>
+
+                    <Button Text="Tambah Kategori"
+                            Command="{Binding TambahKategoriCommand}">
+                        
+                    </Button>
+                    
+                </FlexLayout>
+                
+            </Border>
+
+            <Entry Placeholder="Cari kategori..." Grid.Row="1"/>
+
+            <Border Grid.Row="2"
+                    StrokeShape="RoundRectangle 10"
+                    StrokeThickness="1"
+                    Stroke="White">
+
+                <Grid RowDefinitions="Auto,*"  Padding="16">
+                    
+                    <Grid Grid.Row="0" ColumnDefinitions="Auto,*,*,Auto" Padding="0,10">
+                        <Label Grid.Column="0" HorizontalOptions="Center" Text="ID" FontAttributes="Bold" />
+                        <Label Grid.Column="1" HorizontalOptions="Center" Text="Nama Kategori" FontAttributes="Bold" />
+                        <Label Grid.Column="2" HorizontalOptions="Start" Text="Kode Kategori" FontAttributes="Bold" />
+                        <Label Grid.Column="3" HorizontalOptions="Start" Text="Aksi" FontAttributes="Bold" />
+                    </Grid>
+                    <CollectionView Grid.Row="1" ItemsSource="{Binding Kategories}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Kategori">
+                                <Grid ColumnDefinitions="Auto,*,*,Auto" Padding="0,10" >
+                                    
+                                    <Label Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding Id}" />
+                                    <Label Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Text="{Binding NamaKategori}" />
+                                    <Label Grid.Column="2" VerticalOptions="Center" HorizontalOptions="Start" Text="{Binding KodeKategori}" />
+                                    <HorizontalStackLayout VerticalOptions="End" HorizontalOptions="Center" Grid.Column="3" Spacing="10">
+                                        
+                                        <Button Text="✏️"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:KategoriViewModel}}, Path=EditCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                        <Button Text="🗑️" 
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:KategoriViewModel}}, Path=HapusCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                    </HorizontalStackLayout>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                        <CollectionView.EmptyView>
+                            <VerticalStackLayout >
+                                <Label HorizontalOptions="Center" TextColor="Gray" Text="Data tidak di temukan atau kosong"/>
+                            </VerticalStackLayout>
+                        </CollectionView.EmptyView>
+                    </CollectionView>
+                </Grid>
+
+            </Border>
+        </Grid>
+
+        <Grid VerticalOptions="Fill"
+              HorizontalOptions="Fill"
+              BackgroundColor="#b0000000"
+              IsVisible="{Binding IsVisible}">
+            <Border StrokeShape="RoundRectangle 10"
+                    Padding="16"
+                    StrokeThickness="1"
+                    WidthRequest="400"
+                    VerticalOptions="Center"
+                    BackgroundColor="#1e1e1e">
+                <VerticalStackLayout Spacing="16">
+                    <Label Text="Input Kategori" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center"/>
+                    <Grid RowDefinitions="Auto,Auto" RowSpacing="7">
+                        <Label Grid.Row="0" Text="Nama Kategori"/>
+                        <Entry Grid.Row="1" Placeholder="Masukkan Kategori" Text="{Binding InputKategori}"/>
+                    </Grid>
+                    <Grid RowDefinitions="Auto,Auto" RowSpacing="7">
+                        <Label Grid.Row="0"  Text="Kode Kategori"/>
+                        <Entry Grid.Row="1" Placeholder="Masukkan kode" Text="{Binding InputKode}"/>
+                    </Grid>
+                    <Label Text="{Binding ErrorMessage}" TextColor="red"/>
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="End">
+                        <Button Text="Batal"
+                                TextColor="White"
+                                BackgroundColor="Gray"
+                                Command="{Binding BatalCommand}">
+                        </Button>
+                        <Button Text="Simpan"
+                                Command="{Binding SimpanCommand}">
+                        </Button>
+                    </HorizontalStackLayout>
+                    
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+    </Grid>
+</ContentPage>

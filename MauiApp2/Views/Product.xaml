@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp2.Views.Product"
+             xmlns:vm="clr-namespace:MauiApp2.ViewModels"
+             xmlns:model="clr-namespace:MauiApp2.Models"
+             x:DataType="vm:ProdukViewModel">
+    <Grid>
+
+        <Grid RowDefinitions="Auto,Auto,*" ColumnSpacing="16" Padding="16,7">
+            
+            <Border Grid.Row="0"
+                    StrokeShape="RoundRectangle 4"
+                    MinimumHeightRequest="70"
+                    StrokeThickness="0"
+                    Margin="0,16">
+            
+                <FlexLayout Direction="Row"
+                            JustifyContent="SpaceBetween"
+                            AlignItems="Center"
+                            Padding="5,0">
+
+                    <Grid RowDefinitions="Auto,Auto" RowSpacing="5">
+
+                        <Label Grid.Row="0" Text="📦 KelolaProduk"
+                           FontSize="28"
+                           FontAttributes="Bold"
+                           />
+
+                        <Label Grid.Row="1" Text="Data master barang inventaris"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           Padding="8,0,0,0"/>
+
+                    </Grid>
+
+
+                    <Button Text="+ Tambah Produk"
+                            Padding="20,4"
+                            Command="{Binding TambahProdukCommand}">
+                    
+                    </Button>
+
+                </FlexLayout>
+            
+            </Border>
+
+            <Grid ColumnDefinitions="*,Auto" Grid.Row="1" ColumnSpacing="10" Margin="0,16">
+
+                <Entry Grid.Column="0"
+                       
+                       Placeholder="🔍 Cari nama atau kode produk"/>
+
+                <Picker Grid.Column="1" WidthRequest="180" SelectedItem="0">
+
+                    <Picker.Items>
+                        <x:String>Semua Kategori</x:String>
+                        <x:String>Elektronik</x:String>
+                        <x:String>Meja</x:String>
+                    </Picker.Items>
+                
+                </Picker>
+
+            </Grid>
+
+            <Border Grid.Row="2"
+                    StrokeShape="RoundRectangle 8">
+
+                <Grid RowDefinitions="Auto,*" RowSpacing="-10">
+                
+                    <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*,*,*,*" ColumnSpacing="13" Padding="8,0" Margin="0,16">
+                
+                        <Label Grid.Column="0" Padding="16,0,0,0" Text="Kode" FontSize="15" FontAttributes="Bold" />
+                        <Label Grid.Column="1" HorizontalOptions="Start" Text="Nama Produk" FontSize="15" FontAttributes="Bold" />
+                        <Label Grid.Column="2" HorizontalTextAlignment="End" Padding="0" Text="Kategori" FontSize="15" FontAttributes="Bold" />
+                        <Label Grid.Column="3" HorizontalTextAlignment="End" Padding="0" Text="Stok" FontSize="15" FontAttributes="Bold" />
+                        <Label Grid.Column="4" HorizontalTextAlignment="Center" Padding="0" Text="Status" FontSize="15" FontAttributes="Bold" />
+                        <Label Grid.Column="5" HorizontalTextAlignment="Center" Padding="0" Text="Waktu DiBuat" FontSize="15" FontAttributes="Bold" />
+                        <Label Grid.Column="6" HorizontalTextAlignment="Center"  Text="Aksi" FontSize="15" FontAttributes="Bold" />
+            
+                    </Grid>
+
+                    <CollectionView Grid.Row="1" ItemsSource="{Binding Products}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Produk">
+                                <Grid ColumnDefinitions="*,*,*,*,*,*,*" ColumnSpacing="13" Padding="8,0" Margin="16">
+
+                                    <Label Grid.Column="0" VerticalOptions="Center" Margin="0,5" Padding="16,0,0,0" Text="{Binding KodeProduk}" FontSize="15"  />
+                                    <Label Grid.Column="1" VerticalOptions="Center" Margin="0,5" HorizontalOptions="Start" Text="{Binding NamaProduk}" FontSize="15"  />
+                                    <Label Grid.Column="2" VerticalOptions="Center" Margin="0,5" HorizontalTextAlignment="End" Padding="0" Text="{Binding KategoriProduk}" FontSize="15"  />
+                                    <Label Grid.Column="3" VerticalOptions="Center" Margin="0,5" HorizontalTextAlignment="End" Padding="0" Text="{Binding StokProduk}" FontSize="15" />
+                                    <Label Grid.Column="4" VerticalOptions="Center" Margin="0,5" HorizontalTextAlignment="Center" Padding="0" Text="{Binding StatusProduk}" FontSize="15"  />
+                                    <Label Grid.Column="5" VerticalOptions="Center" Margin="0,5" HorizontalTextAlignment="Center" Padding="0" Text="{Binding WaktuDibuat}" FontSize="15"  />
+                                    <HorizontalStackLayout MinimumHeightRequest="10" Grid.Column="6" Spacing="10" VerticalOptions="Center" Margin="0,5" HorizontalOptions="Center">
+                                        <Button WidthRequest="10"
+                                                FontSize="13"
+                                                Text="✏️"
+                                                Padding="0"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ProdukViewModel}}, Path=EditCommand}"
+                                                CommandParameter="{Binding .}"></Button>
+                                        <Button WidthRequest="10"
+                                                Text="🗑️" 
+                                                Padding="0"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ProdukViewModel}}, Path=HapusCommand}"
+                                                CommandParameter="{Binding .}"></Button>
+                                    </HorizontalStackLayout>
+
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                        <CollectionView.EmptyView>
+                            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
+                            
+                                <Label Text="Tidak ada data ditemukan." 
+                                       FontSize="16" 
+                                       TextColor="Gray" 
+                                       HorizontalTextAlignment="Center"/>
+
+                            </VerticalStackLayout>
+                        </CollectionView.EmptyView>
+                    </CollectionView>
+                
+                
+                    
+                </Grid>
+
+            
+            </Border>
+            
+        </Grid>
+
+
+        <Grid VerticalOptions="Fill"
+              HorizontalOptions="Fill"
+              BackgroundColor="#B0000000"
+              IsVisible="{Binding IsVisible}">
+
+            <Border VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    WidthRequest="400"
+                    BackgroundColor="#1e1e1e"
+                    Padding="20">
+
+                <VerticalStackLayout Spacing="20">
+
+                    <Label Text="Kelola Produk"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center"
+                           FontSize="20"
+                           FontAttributes="Bold"/>
+                    
+                    <Grid RowDefinitions="Auto,Auto" RowSpacing="7">
+                        
+                        <Label Grid.Row="0" Text="🔺 Nama Produk" FontSize="14"/>
+                        <Entry Grid.Row="1" Text="{Binding InputNama}" 
+                               Placeholder="Masukkan nama produk"/>
+                        
+                    </Grid>
+
+                    <Grid RowDefinitions="Auto,Auto" RowSpacing="7">
+
+                        <Label Grid.Row="0" Text="🔺 Kategori Barang" FontSize="14"/>
+                        <Picker Grid.Row="1" SelectedItem="{Binding InputKategori}" Title="Pilih Kategori">
+                            <Picker.Items>
+                                    <x:String>Elektronik</x:String>
+                                    <x:String>Meja</x:String>
+                                    <x:String>Bahan</x:String>
+                            </Picker.Items>
+                        </Picker>
+
+                    </Grid>
+
+                    <Grid RowDefinitions="Auto,Auto" RowSpacing="7">
+
+                        <Label Grid.Row="0" Text="🔺 Stok Produk" FontSize="14"/>
+                        <Entry Grid.Row="1" Text="{Binding InputStok}" Placeholder="Masukkan stok produk" Keyboard="Numeric"/>
+
+                    </Grid>
+
+                    <Grid RowDefinitions="Auto,Auto" RowSpacing="7">
+
+                        <Label Grid.Row="0" Text="🔺 Status Produk" FontSize="14"/>
+                        <Entry Grid.Row="1" Text="{Binding InputStatus}" Placeholder="Masukkan status produk"/>
+
+                    </Grid>
+
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="End">
+                        <Button Command="{Binding BatalCommand}" Text="Batal" BackgroundColor="#aaaaaa"></Button>
+                        <Button Command="{Binding SimpanCommand}" Text="Simpan" WidthRequest="100"></Button>
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+                
+            </Border>
+            
+        </Grid>
+
+    </Grid>
+</ContentPage>

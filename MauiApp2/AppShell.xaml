@@ -1,0 +1,53 @@
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:MauiApp2"
+       xmlns:views="clr-namespace:MauiApp2.Views"
+       x:Class="MauiApp2.AppShell"
+       FlyoutWidth="250">
+
+    <Shell.FlyoutBehavior>
+        <OnPlatform x:TypeArguments="FlyoutBehavior">
+            <On Platform="WinUI" Value="Locked"/>
+            <On Platform="Android, iOS" Value="Flyout"/>
+        </OnPlatform>
+    </Shell.FlyoutBehavior>
+
+    <ShellContent
+        Title="Login"
+        ContentTemplate="{DataTemplate local:LoginPage}"
+        Route="LoginPage"
+        Shell.FlyoutItemIsVisible="False"
+        Shell.FlyoutBehavior="Disabled" />
+
+    <FlyoutItem Title="Dashboard">
+        <ShellContent
+            Title="Dashboard"
+            Route="DashboardPage"
+            ContentTemplate="{DataTemplate local:DashboardPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Kelola User">
+        <ShellContent 
+            Route="KelolaUser"
+            Title="Kelola User"
+            ContentTemplate="{DataTemplate views:KelolaUser}"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Role">
+        <ShellContent 
+                Route="RolePage"
+                Title="Role"
+                ContentTemplate="{DataTemplate views:RolePage}"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Kelola Kategori">
+        <ShellContent Route="KelolaKategori"
+                      ContentTemplate="{DataTemplate views:KelolaKategori}"/>
+    </FlyoutItem>
+
+    <FlyoutItem Title="Kelola Produk">
+        <ShellContent Route="KelolaProduct"
+                      ContentTemplate="{DataTemplate views:Product}"/>
+    </FlyoutItem>
+    
+</Shell>

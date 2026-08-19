@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp2.Views.KelolaUser"
+             xmlns:vm="clr-namespace:MauiApp2.ViewModels"
+             xmlns:models="clr-namespace:MauiApp2.Models"
+             x:DataType="vm:UserViewModel"
+             Title="KelolaUser">
+    <Grid RowDefinitions="Auto, *" RowSpacing="25" Padding="30,15">
+
+        <Grid RowDefinitions="Auto, *" RowSpacing="25" Padding="30,15">
+            
+            <Border Padding="10"
+                Grid.Row="0"
+                Background="DarkSlateGrey"
+                MinimumHeightRequest="100"
+                Stroke="AntiqueWhite"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 12">
+                
+                <FlexLayout Direction="Row"
+                            JustifyContent="SpaceBetween"
+                            AlignItems="Center"
+                            Padding="16">
+                    
+                            <Label Text="👥 Kelola User"
+                                   FontSize="20"
+                                   VerticalOptions="Center"/>
+
+                            <Button MinimumWidthRequest="150"
+                                    MinimumHeightRequest="30"
+                                    VerticalOptions="Center"
+                                    Text="Tambah User"
+                                    Command="{Binding TambahUserCommand}">
+                    
+                            </Button>
+                    
+                </FlexLayout>
+            
+        </Border>
+
+            <Border Padding="10"
+                Grid.Row="1"
+                Background="DarkSlateGrey"
+                MinimumHeightRequest="140"
+                Stroke="AntiqueWhite"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 12">
+
+            <Grid RowDefinitions="Auto,*">
+
+                <!-- Header Tabel -->
+                <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*" Padding="0,10">
+                    <Label Grid.Column="0" HorizontalOptions="Center" Text="No" FontAttributes="Bold" />
+                    <Label Grid.Column="1" HorizontalOptions="Center" Text="Nama" FontAttributes="Bold" />
+                    <Label Grid.Column="2" HorizontalOptions="Center" Text="Role" FontAttributes="Bold" />
+                    <Label Grid.Column="3" HorizontalOptions="Center" Text="Aksi" FontAttributes="Bold" />
+                </Grid>
+
+                <CollectionView Grid.Row="1" ItemsSource="{Binding User}">
+                
+                <CollectionView.ItemTemplate>
+                    
+                    <DataTemplate x:DataType="models:User">
+        
+                        <Grid ColumnDefinitions="*,*,*,*" Padding="0,8">
+                            <Label Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding Id}" />
+                            <Label Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding Name}" />
+                            <Label Grid.Column="2" HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding Role}" />
+                            <HorizontalStackLayout Grid.Column="3" HorizontalOptions="Center" VerticalOptions="Center" Spacing="8">
+                                
+                                <Button Text="Edit" 
+                                        BackgroundColor="#1795a6ff" 
+                                        HeightRequest="32" 
+                                        FontSize="12" 
+                                        Padding="12,0" 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:UserViewModel}}, Path=EditUserCommand}" 
+                                        CommandParameter="{Binding .}"/>
+
+                                        <Button Text="Hapus"
+                                        BackgroundColor="#b82525"
+                                        HeightRequest="32" 
+                                        FontSize="12"
+                                        Padding="12,0"
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type vm:UserViewModel}}, Path=HapusCommand}"
+                                        CommandParameter="{Binding .}"/>
+                                    </HorizontalStackLayout>
+                        </Grid>
+
+                    </DataTemplate>
+                    
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    
+                    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
+
+                        <Image Source="dotnet_bot.png" HeightRequest="170" WidthRequest="200"/>
+
+                        <Label Text="Tidak ada data ditemukan." 
+                               FontSize="16" 
+                               TextColor="Gray" 
+                               HorizontalTextAlignment="Center" />
+                        
+                    </VerticalStackLayout>
+                
+                </CollectionView.EmptyView>
+                
+            </CollectionView>
+            
+            </Grid>
+
+            
+
+        </Border>
+        
+        </Grid>
+
+        <!-- 2. Custom Modal Overlay (Hanya muncul saat IsFormVisible = True) -->
+        <Grid BackgroundColor="#B0000000" 
+              IsVisible="{Binding IsFormVisible}"
+              VerticalOptions="Fill"
+              HorizontalOptions="Fill">
+
+            <!-- Box Card Form di Tengah Layar -->
+            <Border HorizontalOptions="Center" 
+                VerticalOptions="Center" 
+                WidthRequest="400" 
+                BackgroundColor="#1E1E1E" 
+                Padding="25">
+                
+                <VerticalStackLayout Spacing="15">
+                    <Label Text="Tambah User Baru" FontSize="18" FontAttributes="Bold"/>
+
+                    <Entry Placeholder="Nama User" Text="{Binding InputName}"/>
+                    <Entry Placeholder="Password" IsPassword="True" Text="{Binding InputPassword}"/>
+                    <Picker Title="Pilih Role" SelectedItem="{Binding InputRole}">
+                        <Picker.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>Admin</x:String>
+                                <x:String>Operator</x:String>
+                                <x:String>Umum</x:String>
+                            </x:Array>
+                        </Picker.ItemsSource>
+                    </Picker>
+                    <Label Text="{Binding ErrorMessage}" TextColor="Red"    />
+                    <HorizontalStackLayout HorizontalOptions="End" Spacing="10">
+                        <Button Text="Batal" Command="{Binding BatalFormCommand}" BackgroundColor="Gray"/>
+                        <Button Text="Simpan" Command="{Binding SimpanUserCommand}" BackgroundColor="DarkGreen"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+        </Grid>
+
+    </Grid>
+</ContentPage>

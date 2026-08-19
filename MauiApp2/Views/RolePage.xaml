@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp2.Views.RolePage"
+             xmlns:vm="clr-namespace:MauiApp2.ViewModels"
+             xmlns:model="clr-namespace:MauiApp2.Models"
+             x:DataType="vm:RoleViewModel"
+             Title="RolePage">
+    <Grid RowDefinitions="Auto, *" RowSpacing="25" Padding="30,15">
+
+        <Grid RowDefinitions="Auto, *" RowSpacing="25" Padding="30,15">
+            
+            <Border Padding="10"
+                Grid.Row="0"
+                Background="DarkSlateGrey"
+                MinimumHeightRequest="100"
+                Stroke="AntiqueWhite"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 12"
+                >
+
+                <FlexLayout Direction="Row"
+                            JustifyContent="SpaceBetween"
+                            AlignItems="Center"
+                            Padding="15">
+
+                    <Label Text="🔗 Kelola Role" FontSize="21" FontAttributes="Bold"/>
+
+                    <Button MinimumWidthRequest="150"
+                            MinimumHeightRequest="30"
+                            VerticalOptions="Center"
+                            Text="Tambah Role"
+                            Command="{Binding TambahRoleCommand}">
+                        
+                    </Button>
+
+                </FlexLayout>
+                
+            </Border>
+
+            <Border Padding="10"
+            Grid.Row="1"
+            Background="DarkSlateGrey"
+            MinimumHeightRequest="140"
+            Stroke="AntiqueWhite"
+            StrokeThickness="1"
+            StrokeShape="RoundRectangle 12"
+            >
+
+                <Grid RowDefinitions="Auto,*" RowSpacing="16">
+
+                    <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*" Padding="0,10">
+                        
+                        <Label Grid.Column="0" HorizontalOptions="Center" Text="No" FontAttributes="Bold" />
+                        <Label Grid.Column="1" HorizontalOptions="Center" Text="Nama Role" FontAttributes="Bold" />
+                        <Label Grid.Column="2" HorizontalOptions="Center" Text="Kode Role" FontAttributes="Bold" />
+                        <Label Grid.Column="3" HorizontalOptions="Center" Text="Aksi" FontAttributes="Bold" />
+
+                    </Grid>
+
+                    <CollectionView Grid.Row="1" ItemsSource="{Binding Roles}">
+                        <CollectionView.EmptyView>
+                            <VerticalStackLayout Margin="13">
+                            <Label Text="Tidak ada role yang tersedia." HorizontalOptions="Center" VerticalOptions="Center" />
+                                
+                            </VerticalStackLayout>
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Role">
+                                
+                                <Grid ColumnDefinitions="*,*,*,*" Padding="0,10">
+                                    <Label Grid.Column="0" Text="{Binding Id}" HorizontalOptions="Center" />
+                                    <Label Grid.Column="1" Text="{Binding RoleName}" HorizontalOptions="Center" />
+                                    <Label Grid.Column="2" Text="{Binding Kode}" HorizontalOptions="Center" />
+                                    <HorizontalStackLayout HorizontalOptions="Center" Grid.Column="3" Spacing="10">
+
+                                        <Button Text="Edit"
+                                                MinimumHeightRequest="30"
+                                                MinimumWidthRequest="30"
+                                                BackgroundColor="#1763a6"
+                                                Padding="8"
+                                                FontSize="12"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:RoleViewModel}}, Path=EditRoleCommand}"
+                                                CommandParameter="{Binding .}"/>
+
+                                        <Button Text="Hapus"
+                                                MinimumHeightRequest="30"
+                                                MinimumWidthRequest="30"
+                                                BackgroundColor="#b82525"
+                                                Padding="8"
+                                                FontSize="12"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:RoleViewModel}}, Path=HapusRoleCommand}"
+                                                CommandParameter="{Binding .}"/>
+
+                                    </HorizontalStackLayout>
+                                </Grid>
+
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                        
+                    </CollectionView>
+
+                </Grid> 
+                
+            </Border>
+
+        </Grid>
+
+        <Grid BackgroundColor="#B0000000"
+              IsVisible="{Binding IsFormVisible}"
+              VerticalOptions="Fill"
+              HorizontalOptions="Fill">
+
+            <Border WidthRequest="400"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"
+                    Padding="25"
+                    BackgroundColor="#1E1E1E">
+
+                <VerticalStackLayout Spacing="15">
+                    
+                    <Label Text="Buat Role Baru"
+                           FontSize="18"
+                           FontAttributes="Bold"/>
+                    
+                    <Entry Placeholder="Nama Role"
+                           Text="{Binding InputRole}"/>
+                    <Entry Placeholder="Kode Role"
+                           Text="{Binding InputKode}"/>
+
+                    <HorizontalStackLayout HorizontalOptions="End" Spacing="10">
+                        <Button Text="Batal" Command="{Binding BatalCommand}" BackgroundColor="DarkSlateGrey"/>
+                        <Button Text="Simpan" Command="{Binding SimpanCommand}" BackgroundColor="Green"/>
+                    </HorizontalStackLayout>
+                    
+                </VerticalStackLayout>
+                
+            </Border>
+            
+        </Grid>
+
+    </Grid>
+    
+</ContentPage>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp2.DashboardPage"
+             xmlns:vm="clr-namespace:MauiApp2.ViewModels"
+             x:DataType="vm:DashboardViewModel"
+             Title="DashboardPage">
+    <ScrollView>
+        
+    <Grid RowDefinitions="Auto, Auto" RowSpacing="10">
+        
+        <Grid Grid.Row="0" HorizontalOptions="Center" ColumnDefinitions="Auto, Auto, Auto, Auto" Padding="15" ColumnSpacing="60">
+            
+            <Border Grid.Column="0"
+                    Stroke="WhiteSmoke" 
+                    StrokeShape="RoundRectangle 14" 
+                    StrokeThickness="1" 
+                    Padding="16 , 10"
+                    MinimumWidthRequest="200"
+                    MinimumHeightRequest="100"
+                    BackgroundColor="Black">
+                
+                <Label Text="Hello World"
+                       FontSize="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
+                       FontAttributes="Bold"/>
+                
+            </Border>
+
+            <Border Grid.Column="1"
+                    Stroke="WhiteSmoke" 
+                    StrokeShape="RoundRectangle 14" 
+                    StrokeThickness="1" 
+                    Padding="16 , 10"
+                    MinimumWidthRequest="200"
+                    MinimumHeightRequest="100"
+                    BackgroundColor="Black">
+                
+                <Label Text="Hello World"
+                       FontSize="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
+                       FontAttributes="Bold"/>
+                
+            </Border>
+
+            <Border Grid.Column="2"
+                    Stroke="WhiteSmoke" 
+                    StrokeShape="RoundRectangle 14" 
+                    StrokeThickness="1" 
+                    Padding="16 , 10"
+                    MinimumWidthRequest="200"
+                    MinimumHeightRequest="100"
+                    BackgroundColor="Black">
+                
+                <Label Text="Hello World"
+                       FontSize="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
+                       FontAttributes="Bold"/>
+                
+            </Border>
+
+                <Border Grid.Column="3"
+                    Stroke="WhiteSmoke" 
+                    StrokeShape="RoundRectangle 14" 
+                    StrokeThickness="1" 
+                    Padding="16 , 10"
+                    MinimumWidthRequest="200"
+                    MinimumHeightRequest="100"
+                    BackgroundColor="Black">
+
+                    <Label Text="Hello World"
+                       FontSize="20"
+                       VerticalOptions="Center"
+                       HorizontalOptions="Center"
+                       FontAttributes="Bold"/>
+
+                </Border>
+            </Grid>
+
+        <Grid Grid.Row="1" ColumnDefinitions="*, 250" Padding="15" ColumnSpacing="30">
+            
+            <Border Grid.Column="0"
+                    Stroke="White"
+                    StrokeShape="RoundRectangle 14"
+                    StrokeThickness="1"
+                    Padding="10,10"
+                    BackgroundColor="Blue">
+
+                    <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto,Auto" 
+                          RowSpacing="4" ColumnSpacing="8">
+                        <!-- Header -->
+                        <Label Text="Nama" Grid.Row="0" Grid.Column="0" FontAttributes="Bold" />
+                        <Label Text="No. HP" Grid.Row="0" Grid.Column="1" FontAttributes="Bold" />
+                        <Label Text="Email" Grid.Row="0" Grid.Column="2" FontAttributes="Bold" />
+
+                        <!-- Baris data -->
+                        <Label Text="Budi" Grid.Row="1" Grid.Column="0" />
+                        <Label Text="0812xxxx" Grid.Row="1" Grid.Column="1" />
+                        <Label Text="budi@mail.com" Grid.Row="1" Grid.Column="2" />
+                    </Grid>
+
+                </Border>
+
+            <Border Grid.Column="1"
+                    Stroke="White"
+                    StrokeShape="RoundRectangle 14"
+                    StrokeThickness="1"
+                    Padding="20,15"
+                    BackgroundColor="Blue"
+                    MinimumHeightRequest="350">
+                
+                <Grid RowDefinitions="Auto, Auto" Padding="5, 10" RowSpacing="20" >
+
+                    <Label Grid.Row="0"
+                       Text="Aksi Pintasan"
+                       FontSize="20"
+                       VerticalOptions="Start"
+                       HorizontalOptions="Start"
+                       FontAttributes="Bold"/>
+
+                    <Grid Grid.Row="1" ColumnDefinitions="*, *" ColumnSpacing="10" RowDefinitions="Auto, Auto" RowSpacing="10">
+
+                        <Border Grid.Column="0"
+                                Grid.Row="0"
+                                Stroke="White"
+                                StrokeShape="RoundRectangle 14"
+                                StrokeThickness="1"
+                                BackgroundColor="Aquamarine"
+                                MinimumHeightRequest="100">
+
+                                <Button Text="Kelola User"
+                                        Command="{Binding NavigateToKelolaUserCommand}">
+                                    
+                                </Button>
+                            
+                        </Border>
+
+                        <Border Grid.Column="1"
+                                Grid.Row="0"
+                                Stroke="White"
+                                StrokeShape="RoundRectangle 14"
+                                StrokeThickness="1"
+                                BackgroundColor="Aquamarine"
+                                MinimumHeightRequest="100">
+
+                                <Button Text="Click me">
+
+                                </Button>
+
+                            </Border>
+
+                        <Border Grid.Column="0"
+                                Grid.Row="1"
+                                Stroke="White"
+                                StrokeShape="RoundRectangle 14"
+                                StrokeThickness="1"
+                                BackgroundColor="Aquamarine"
+                                MinimumHeightRequest="100">
+
+                                <Button Text="Click me">
+
+                                </Button>
+
+                            </Border>
+
+                        <Border Grid.Column="1"
+                                Grid.Row="1"
+                                Stroke="White"
+                                StrokeShape="RoundRectangle 14"
+                                StrokeThickness="1"
+                                BackgroundColor="Aquamarine"
+                                MinimumHeightRequest="1"
+                                HeightRequest="80"
+                                VerticalOptions="Start">
+
+                                <Button Text="Click me">
+
+                                </Button>
+
+                            </Border>
+
+                    </Grid>
+                    
+                </Grid>
+                
+            </Border>
+
+        </Grid>
+        
+    </Grid>
+        
+    </ScrollView>
+</ContentPage>
