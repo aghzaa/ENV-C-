@@ -52,7 +52,7 @@
                 <!-- Header Tabel -->
                 <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*" Padding="0,10">
                     <Label Grid.Column="0" HorizontalOptions="Center" Text="No" FontAttributes="Bold" />
-                    <Label Grid.Column="1" HorizontalOptions="Center" Text="Nama" FontAttributes="Bold" />
+                    <Label Grid.Column="1" HorizontalOptions="Center" Text="Username" FontAttributes="Bold" />
                     <Label Grid.Column="2" HorizontalOptions="Center" Text="Role" FontAttributes="Bold" />
                     <Label Grid.Column="3" HorizontalOptions="Center" Text="Aksi" FontAttributes="Bold" />
                 </Grid>
@@ -65,7 +65,7 @@
         
                         <Grid ColumnDefinitions="*,*,*,*" Padding="0,8">
                             <Label Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding Id}" />
-                            <Label Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding Name}" />
+                            <Label Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding Username}" />
                             <Label Grid.Column="2" HorizontalOptions="Center" VerticalOptions="Center" Text="{Binding Role}" />
                             <HorizontalStackLayout Grid.Column="3" HorizontalOptions="Center" VerticalOptions="Center" Spacing="8">
                                 

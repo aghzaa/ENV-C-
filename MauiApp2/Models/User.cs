@@ -1,12 +1,18 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Text.Json.Serialization;
 
 namespace MauiApp2.Models;
 public class User
 {
+    [JsonPropertyName("id")]
     public int Id { get; set; }
-    public string Name { get; set; } = string.Empty;
+
+    [JsonPropertyName("username")]
+    public string Username { get; set; } = string.Empty;
+
     public string Password { get; set; }
+
+    [JsonPropertyName("role")]
     public string Role { get; set; }
 }

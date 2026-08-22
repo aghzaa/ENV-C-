@@ -57,7 +57,7 @@ public partial class UserViewModel : ObservableObject
     [RelayCommand]
     private void EditUser(User user)
     {
-        InputName = user.Name;
+        InputName = user.Username;
         InputRole = user.Role;
 
         IsEditMode = true;
@@ -82,7 +82,7 @@ public partial class UserViewModel : ObservableObject
 
             if(userLama != null)
             {
-                userLama.Name = InputName;
+                userLama.Username = InputName;
                 userLama.Password = InputPassword;
                 userLama.Role = InputRole;
 
@@ -103,7 +103,7 @@ public partial class UserViewModel : ObservableObject
         User.Add(new User
         {
             Id = Nextid,
-            Name = InputName,
+            Username = InputName,
             Password = InputPassword,
             Role = InputRole
         });
