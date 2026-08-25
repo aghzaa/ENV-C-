@@ -5,11 +5,19 @@ using System.Text;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiApp2.Models;
+using MauiApp2.Services;
 
 namespace MauiApp2.ViewModels;
 
 public partial class ProdukViewModel : ObservableObject
 {
+
+    private readonly ApiServices _service;
+
+    public ProdukViewModel(ApiServices service)
+    {
+        _service = service;
+    }
 
     [ObservableProperty]
     private ObservableCollection<Produk> _products = new();
@@ -57,6 +65,30 @@ public partial class ProdukViewModel : ObservableObject
 
     [ObservableProperty]
     private string _inputStatus;
+
+    [RelayCommand]
+    private async Task LoadData()
+    {
+        string endpoint = "http://127.0.0.1:8000/api/products";
+
+        var response = await _service.GetAllAsync<Produk>(endpoint);
+
+        if (response != null && response.Data != null)
+        {
+            Products.Clear();
+
+            foreach(var i in response.Data)
+            {
+                if (DateTime.TryParse(i.WaktuDibuat, out DateTime parse))
+                {
+                    i.WaktuDibuat = parse.ToString("dd/mm/yyyy");
+                }
+                Products.Add(i);
+            }
+        }
+
+        
+    }
      
     //fuction input
 
@@ -97,7 +129,7 @@ public partial class ProdukViewModel : ObservableObject
                 productLama.StokProduk = InputStok;
                 productLama.StatusProduk = InputStatus;
                 productLama.KategoriProduk = InputKategori;
-                productLama.WaktuDibuat = sekarang.ToString();
+                productLama.WaktuDibuat = sekarang.ToString("dd/MM/yyyy");
 
                 //var index = Products.IndexOf(productLama);
                 //Produk[index] = productLama;
@@ -123,7 +155,7 @@ public partial class ProdukViewModel : ObservableObject
                 KategoriProduk = InputKategori,
                 StokProduk = InputStok,
                 StatusProduk = InputStatus,
-                WaktuDibuat = sekarang.ToString()
+                WaktuDibuat = sekarang.ToString("dd/MM/yyyy")
             });
 
         }

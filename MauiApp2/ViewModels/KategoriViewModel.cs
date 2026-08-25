@@ -6,11 +6,18 @@ using System.Text;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiApp2.Models;
+using MauiApp2.Services;
 
 namespace MauiApp2.ViewModels;
 
 public partial class KategoriViewModel : ObservableObject
 {
+    private readonly ApiServices _service;
+
+    public KategoriViewModel(ApiServices service)
+    {
+        _service = service;
+    }
     [ObservableProperty]
     private ObservableCollection<Kategori> _kategories = new();
 
@@ -34,6 +41,24 @@ public partial class KategoriViewModel : ObservableObject
 
     [ObservableProperty]
     private string _inputKode;
+
+    [RelayCommand]
+    private async Task LoadData()
+    {
+        string endpoint = "http://127.0.0.1:8000/api/kategoris";
+
+        var response = await _service.GetAllAsync<Kategori>(endpoint);
+
+        if(response != null && response.Data != null)
+        {
+            Kategories.Clear();
+
+            foreach(var i in response.Data)
+            {
+                Kategories.Add(i);
+            }
+        }
+    }
 
     // Delete
 

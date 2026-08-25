@@ -8,4 +8,14 @@ public partial class Product : ContentPage
 		InitializeComponent();
 		BindingContext = vm;
 	}
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+		if(BindingContext is ProdukViewModel vm)
+		{
+			vm.LoadDataCommand.Execute(null);
+		}
+    }
 }

@@ -1,15 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
 using MauiApp2.Models;
+using MauiApp2.Services;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Text;
+using MauiApp2.Services;
 
 namespace MauiApp2.ViewModels;
 
 public partial class UserViewModel : ObservableObject
 {
+    private readonly ApiServices _apiServices;
+    public UserViewModel(ApiServices apiservice)
+    {
+        _apiServices = apiservice;
+    }
 
     [ObservableProperty]
     private ObservableCollection<User> _user = new();
@@ -35,7 +42,25 @@ public partial class UserViewModel : ObservableObject
     [ObservableProperty]
     private int _idYangDiPilih;
 
-  
+
+    [RelayCommand]
+    private async Task loadDataAsync()
+    {
+        string endpoint = "http://127.0.0.1:8000/api/users";
+
+        var response = await _apiServices.GetAllAsync<User>(endpoint);
+
+        if (response != null && response.Data != null)
+        {
+            User.Clear();
+
+            foreach(var i in response.Data)
+            {
+                User.Add(i);
+            }
+        }
+    }
+
 
     [RelayCommand]
     private void BatalForm()

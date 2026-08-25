@@ -5,11 +5,19 @@ using MauiApp2.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
+using MauiApp2.Services;
 
 namespace MauiApp2.ViewModels;
 
 public partial class RoleViewModel : ObservableObject
 {
+    private readonly ApiServices _services;
+
+    public RoleViewModel(ApiServices service)
+    {
+        _services = service;
+    }
+
     [ObservableProperty]
     private ObservableCollection<Role> _roles = new();
 
@@ -27,6 +35,25 @@ public partial class RoleViewModel : ObservableObject
 
     [ObservableProperty]
     private int _idYangDiPilih;
+
+    [RelayCommand]
+    private async Task LoadData()
+    {
+        string endpoint = "http://127.0.0.1:8000/api/roles";
+
+        var ApiResponse = await _services.GetAllAsync<Role>(endpoint);
+
+        if(ApiResponse != null && ApiResponse.Data != null)
+        {
+            Roles.Clear();
+
+            foreach(var i in ApiResponse.Data)
+            {
+                Roles.Add(i);
+            }
+        }
+
+    }
 
     [RelayCommand]
     private async Task HapusRole(Role role)

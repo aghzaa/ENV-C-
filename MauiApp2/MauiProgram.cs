@@ -1,6 +1,7 @@
 using MauiApp2.ViewModels;
 using MauiApp2.Views;
 using Microsoft.Extensions.Logging;
+using MauiApp2.Services;
 
 namespace MauiApp2
 {
@@ -38,6 +39,8 @@ namespace MauiApp2
 
             builder.Services.AddTransient<KategoriViewModel>();
             builder.Services.AddTransient<KelolaKategori>();
+
+            builder.Services.AddSingleton<ApiServices>();
 
             return builder.Build();
         }

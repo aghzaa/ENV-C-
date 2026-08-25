@@ -9,4 +9,15 @@ public partial class KelolaUser : ContentPage
 		InitializeComponent();
 		BindingContext = vm;
 	}
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        // Pastikan halaman ini tahu bahwa ia terikat dengan ProdukViewModel
+        if (BindingContext is UserViewModel viewModel)
+        {
+            // Jalankan perintah LoadData yang baru saja kita buat
+            viewModel.loadDataCommand.Execute(null);
+        }
+    }
 }
