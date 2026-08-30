@@ -86,7 +86,7 @@ public partial class RoleViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void Simpan()
+    private async Task Simpan()
     {
         if(IsEditMode == true)
         {
@@ -103,6 +103,8 @@ public partial class RoleViewModel : ObservableObject
 
                 var index = Roles.IndexOf(roleLama);
                 Roles[index] = roleLama;
+
+                IsFormVisible = false;
             }
         }else
         {
@@ -112,17 +114,35 @@ public partial class RoleViewModel : ObservableObject
             return;
         }
 
-        int id = Roles.Count + 1;
-        Roles.Add(new Role
-        {
-            Id = id,
-            RoleName = InputRole,
-            Kode = InputKode
-        });
+            var data = new Role
+            {
+                RoleName = InputRole,
+                Kode = InputKode,
+            };
+
+            string endpoint = "http://127.0.0.1:8000/api/roles";
+
+            var response =await _services.PostAsync<Role>(endpoint, data);
+
+            if (response != null && response.Status == "success")
+            {
+                Roles.Add(response.Data);
+
+                IsFormVisible = false;
+                await Application.Current.MainPage.DisplayAlert("Berhasil", "Data berhasil di tambahkan", "Ya");
+
+            }
+            else
+            {
+                IsFormVisible = false;
+                await Application.Current.MainPage.DisplayAlert("Gagal", "Data gagal di simpan ke Server", "Ya");
+            }
 
         }
 
-        IsFormVisible = false;
+        InputRole = string.Empty;
+        InputKode = string.Empty;
+        //IsFormVisible = false;
 
     }
     [RelayCommand]

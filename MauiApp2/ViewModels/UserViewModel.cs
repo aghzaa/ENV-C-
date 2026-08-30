@@ -92,7 +92,7 @@ public partial class UserViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void SimpanUser()
+    private async Task SimpanUser()
     {
         if(IsEditMode == true)
         {
@@ -124,14 +124,24 @@ public partial class UserViewModel : ObservableObject
             ErrorMessage = "Semua field harus diisi.";
             return;
         }
-        int Nextid = User.Count + 1;
-        User.Add(new User
-        {
-            Id = Nextid,
-            Username = InputName,
-            Password = InputPassword,
-            Role = InputRole
-        });
+
+            string endpoint = "http://127.0.0.1:8000/api/users";
+
+            var data = new User
+            {
+                Username = InputName,
+                Password = InputPassword,
+                Role = InputRole,
+            };
+
+            var response = await _apiServices.PostAsync<User>(endpoint, data);
+
+            if (response != null && response.Data != null)
+            {
+                User.Add(response.Data);
+
+                Application.Current.MainPage.DisplayAlert("Berhasil", "Berhasil menambahkan user", "Oke");
+            }
 
         }
 

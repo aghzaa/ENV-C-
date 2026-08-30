@@ -79,10 +79,12 @@ public partial class ProdukViewModel : ObservableObject
 
             foreach(var i in response.Data)
             {
-                if (DateTime.TryParse(i.WaktuDibuat, out DateTime parse))
+                // Konversi string datetime dari API ke format yang diinginkan
+                if (DateTime.TryParse(i.WaktuDibuat, out DateTime parsedDate))
                 {
-                    i.WaktuDibuat = parse.ToString("dd/mm/yyyy");
+                    i.WaktuDibuat = parsedDate.ToString("dd/MM/yyyy");
                 }
+                
                 Products.Add(i);
             }
         }
