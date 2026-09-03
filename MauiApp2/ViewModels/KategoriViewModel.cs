@@ -89,17 +89,17 @@ public partial class KategoriViewModel : ObservableObject
     //Create
 
     [RelayCommand]
-    private void Simpan()
+    private async Task Simpan()
     {
 
-        if(ModeEdit == true)
-        {
             if (string.IsNullOrEmpty(InputKategori) || string.IsNullOrEmpty(InputKode))
             {
 
                 ErrorMessage = "Pastikan Kategori atau Kode terisi!";
                 return;
             }
+        if(ModeEdit == true)
+        {
 
             var kategoriLama = Kategories.FirstOrDefault(i => i.Id == IdYangDiPilih);
             if (kategoriLama != null)
@@ -110,24 +110,31 @@ public partial class KategoriViewModel : ObservableObject
         }
         else
         {
+            string endpoint = "http://127.0.0.1:8000/api/kategoris";
 
-            if(string.IsNullOrEmpty(InputKategori) || string.IsNullOrEmpty(InputKode))
+            var data = new Kategori
             {
-            
-                ErrorMessage = "Pastikan Kategori atau Kode terisi!";
-                return;
-            }
-
-            int Id = Kategories.Count + 1;
-
-            Kategories.Add(new Kategori
-            {
-                Id = Id,
                 NamaKategori = InputKategori,
                 KodeKategori = InputKode
-            });
-        }
+            };
 
+            var response = await _service.PostAsync(endpoint, data);
+
+            if (response != null && response.Status == "success")
+            {
+                Kategories.Add(response.Data);
+
+                await Application.Current.MainPage.DisplayAlert("Berhasil", "Kategori berhasil ditambahkan.", "OK");
+
+                LoadData();
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Gagal", "Kategori gagal ditambahkan.", "OK");
+
+            }
+
+        }
 
         resetForm();
         IsVisible = false;

@@ -4,6 +4,7 @@
              x:Class="MauiApp2.DashboardPage"
              xmlns:vm="clr-namespace:MauiApp2.ViewModels"
              x:DataType="vm:DashboardViewModel"
+             xmlns:models="clr-namespace:MauiApp2.Models"
              Title="DashboardPage">
     <ScrollView>
         
@@ -82,24 +83,35 @@
 
         <Grid Grid.Row="1" ColumnDefinitions="*, 250" Padding="15" ColumnSpacing="30">
             
-            <Border Grid.Column="0"
+            <Border Grid.Row="0"
                     Stroke="White"
                     StrokeShape="RoundRectangle 14"
                     StrokeThickness="1"
                     Padding="10,10"
                     BackgroundColor="Blue">
 
-                    <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto,Auto" 
-                          RowSpacing="4" ColumnSpacing="8">
-                        <!-- Header -->
-                        <Label Text="Nama" Grid.Row="0" Grid.Column="0" FontAttributes="Bold" />
-                        <Label Text="No. HP" Grid.Row="0" Grid.Column="1" FontAttributes="Bold" />
-                        <Label Text="Email" Grid.Row="0" Grid.Column="2" FontAttributes="Bold" />
+                    <Grid RowDefinitions="Auto,*" >
 
-                        <!-- Baris data -->
-                        <Label Text="Budi" Grid.Row="1" Grid.Column="0" />
-                        <Label Text="0812xxxx" Grid.Row="1" Grid.Column="1" />
-                        <Label Text="budi@mail.com" Grid.Row="1" Grid.Column="2" />
+                        <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*" Padding="0,10">
+                            <Label Grid.Column="0" HorizontalOptions="Center" Text="No" FontAttributes="Bold" />
+                            <Label Grid.Column="1" HorizontalOptions="Center" Text="Username" FontAttributes="Bold" />
+                            <Label Grid.Column="2" HorizontalOptions="Center" Text="Role" FontAttributes="Bold" />
+                            <Label Grid.Column="3" HorizontalOptions="Center" Text="Aksi" FontAttributes="Bold" />
+                        </Grid>
+
+                        <CollectionView Grid.Row="1" ItemsSource="{Binding Users}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:User">
+                                    <Grid ColumnDefinitions="*,*,*,*" Padding="0,10">
+                                        <Label Grid.Column="0" HorizontalOptions="Center" Text="{Binding Id}" FontAttributes="Bold" />
+                                        <Label Grid.Column="1" HorizontalOptions="Center" Text="{Binding Username}" FontAttributes="Bold" />
+                                        <Label Grid.Column="2" HorizontalOptions="Center" Text="{Binding Role}" FontAttributes="Bold" />
+                                        <Label Grid.Column="3" HorizontalOptions="Center" Text="Aksi" FontAttributes="Bold" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+
                     </Grid>
 
                 </Border>

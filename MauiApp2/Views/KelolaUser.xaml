@@ -134,14 +134,11 @@
 
                     <Entry Placeholder="Nama User" Text="{Binding InputName}"/>
                     <Entry Placeholder="Password" IsPassword="True" Text="{Binding InputPassword}"/>
-                    <Picker Title="Pilih Role" SelectedItem="{Binding InputRole}">
-                        <Picker.ItemsSource>
-                            <x:Array Type="{x:Type x:String}">
-                                <x:String>Admin</x:String>
-                                <x:String>Operator</x:String>
-                                <x:String>Umum</x:String>
-                            </x:Array>
-                        </Picker.ItemsSource>
+                    <Picker Title="Pilih Role" 
+                            SelectedItem="{Binding SelectedRole}"
+                            ItemsSource="{Binding Roles}"
+                            ItemDisplayBinding="{Binding RoleName}">
+                        
                     </Picker>
                     <Label Text="{Binding ErrorMessage}" TextColor="Red"    />
                     <HorizontalStackLayout HorizontalOptions="End" Spacing="10">

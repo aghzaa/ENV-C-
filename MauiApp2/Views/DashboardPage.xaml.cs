@@ -9,4 +9,14 @@ public partial class DashboardPage : ContentPage
 		BindingContext = vm;
 	}
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (BindingContext is DashboardViewModel vm)
+        {
+             vm.GetUserCommand.ExecuteAsync(null);
+        }
+    }
+
 }

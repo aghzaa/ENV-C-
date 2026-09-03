@@ -33,4 +33,7 @@ public partial class Produk : ObservableObject
     [ObservableProperty]
     [property: JsonPropertyName("created_at")]
     private string _waktuDibuat = string.Empty;
+
+    [JsonPropertyName("kategori_id")]
+    public int KategoriId { get; set; }
 }

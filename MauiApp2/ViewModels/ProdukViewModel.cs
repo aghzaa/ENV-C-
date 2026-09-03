@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiApp2.Models;
 using MauiApp2.Services;
+using MauiApp2.Views;
 
 namespace MauiApp2.ViewModels;
 
@@ -23,6 +24,12 @@ public partial class ProdukViewModel : ObservableObject
     private ObservableCollection<Produk> _products = new();
 
     [ObservableProperty]
+    private ObservableCollection<Kategori> _kategories = new();
+
+    [ObservableProperty]
+    private Kategori _selectedKategori;
+
+    [ObservableProperty]
     private bool _isVisible;
 
     [ObservableProperty]
@@ -30,27 +37,6 @@ public partial class ProdukViewModel : ObservableObject
 
     [ObservableProperty]
     private int _idYangDipilih;
-
-
-    ////Collection view (Tidak di butuh kan lagi)
-
-    //[ObservableProperty]
-    //private int id;
-
-    //[ObservableProperty]
-    //private string _kodeProduk;
-
-    //[ObservableProperty]
-    //private string _namaProduk;
-
-    //[ObservableProperty]
-    //private string _kategoriProduk;
-
-    //[ObservableProperty]
-    //private int _stokProduk;
-
-    //[ObservableProperty]
-    //private string _statusProduk;
 
     //Input produk
 
@@ -89,7 +75,19 @@ public partial class ProdukViewModel : ObservableObject
             }
         }
 
-        
+        string enpointKategori = "http://127.0.0.1:8000/api/kategoris";
+
+        var responseKategori = await _service.GetAllAsync<Kategori>(enpointKategori);
+
+        if(responseKategori != null && responseKategori.Data != null)
+        {
+            Kategories.Clear();
+
+            foreach(var i in responseKategori.Data)
+            {
+                Kategories.Add(i);
+            }
+        }
     }
      
     //fuction input
@@ -113,16 +111,18 @@ public partial class ProdukViewModel : ObservableObject
     //Create
 
     [RelayCommand]
-    private void Simpan()
+    private async Task Simpan()
     {
         DateTime sekarang = DateTime.Now;
 
+        if ( string.IsNullOrEmpty(InputNama) || InputStok < 0 || string.IsNullOrEmpty(InputStatus))
+        {
+            return;
+        }
+
         if (IsModeEdit == true)
         {
-            if (string.IsNullOrEmpty(InputKategori) || string.IsNullOrEmpty(InputNama) || InputStok < 0 || string.IsNullOrEmpty(InputStatus))
-            {
-                return;
-            }
+            
 
             var productLama = Products.FirstOrDefault(p => p.Id == IdYangDipilih);
             if (productLama != null)
@@ -141,24 +141,34 @@ public partial class ProdukViewModel : ObservableObject
         else
         {
 
-            if (string.IsNullOrEmpty(InputKategori) || string.IsNullOrEmpty(InputNama) || InputStok < 0 || string.IsNullOrEmpty(InputStatus))
+            string endpoint = "http://127.0.0.1:8000/api/products";
+
+            //var kategori = SelectedKategori.Kode;
+
+            var data = new Produk
             {
-                return;
-            }
-
-            int id = Products.Count + 1;
-
-
-            Products.Add(new Produk
-            {
-                Id = id,
-                KodeProduk = $"PRD{id:D3}",
+                KodeProduk = SelectedKategori.KodeKategori + "-" + Products.Count,
                 NamaProduk = InputNama,
-                KategoriProduk = InputKategori,
                 StokProduk = InputStok,
+                KategoriId = SelectedKategori.Id,
                 StatusProduk = InputStatus,
-                WaktuDibuat = sekarang.ToString("dd/MM/yyyy")
-            });
+            };
+
+            var response = await _service.PostAsync<Produk>(endpoint, data);
+
+            if (response != null && response.Status == "success")
+            {
+                Products.Add(response.Data);
+
+                LoadData();
+
+                await Application.Current.MainPage.DisplayAlert("Berhasil", "Produk berhasil di tambahkan", "OK");
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Gagal", "Produk gagal di tambahkan", "OK");
+
+            }
 
         }
 

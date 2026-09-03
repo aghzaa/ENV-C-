@@ -160,12 +160,11 @@
                     <Grid RowDefinitions="Auto,Auto" RowSpacing="7">
 
                         <Label Grid.Row="0" Text="🔺 Kategori Barang" FontSize="14"/>
-                        <Picker Grid.Row="1" SelectedItem="{Binding InputKategori}" Title="Pilih Kategori">
-                            <Picker.Items>
-                                    <x:String>Elektronik</x:String>
-                                    <x:String>Meja</x:String>
-                                    <x:String>Bahan</x:String>
-                            </Picker.Items>
+                        <Picker Grid.Row="1" 
+                                SelectedItem="{Binding SelectedKategori}"
+                                ItemsSource="{Binding Kategories}"
+                                ItemDisplayBinding="{Binding NamaKategori}"
+                                Title="Pilih Kategori">
                         </Picker>
 
                     </Grid>

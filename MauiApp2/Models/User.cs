@@ -11,8 +11,12 @@ public class User
     [JsonPropertyName("username")]
     public string Username { get; set; } = string.Empty;
 
+    [JsonPropertyName("password")]
     public string Password { get; set; }
 
     [JsonPropertyName("role")]
     public string Role { get; set; }
+
+    [JsonPropertyName("role_id")]
+    public int? RoleId { get; set; }
 }

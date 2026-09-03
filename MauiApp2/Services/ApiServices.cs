@@ -53,7 +53,7 @@ public class ApiServices
             if (response.IsSuccessStatusCode)
             {   //baca response dari server
                 var jsonResult = await response.Content.ReadAsStringAsync();
-                //ubah response server menjadi object c#
+                //ubah response server (json brok) menjadi object c#
                 var dataJson = JsonSerializer.Deserialize<ApiResponse<T>>(jsonResult);
 
                 return dataJson;
@@ -65,5 +65,28 @@ public class ApiServices
         }
 
         return null;
+    }
+
+    public async Task<bool> DeleteAsync(string endpoint)
+    {
+        try
+        {
+            var response = await _httpClient.DeleteAsync(endpoint);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            Application.Current.MainPage.DisplayAlert("Terjadi Error :" + ex, "Error", "Ya");
+            return false;
+        }
+
     }
 }

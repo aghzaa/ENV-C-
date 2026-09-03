@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using MauiApp2.Models;
 using MauiApp2.Services;
@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
-using MauiApp2.Services;
 
 namespace MauiApp2.ViewModels;
 
@@ -17,6 +16,12 @@ public partial class UserViewModel : ObservableObject
     {
         _apiServices = apiservice;
     }
+
+    [ObservableProperty]
+    private ObservableCollection<Role> _roles = new();
+
+    [ObservableProperty]
+    private Role _selectedRole;
 
     [ObservableProperty]
     private ObservableCollection<User> _user = new();
@@ -31,7 +36,7 @@ public partial class UserViewModel : ObservableObject
     private string _inputPassword = string.Empty;
 
     [ObservableProperty]
-    private string _inputRole = string.Empty;
+    private int _inputRole;
 
     [ObservableProperty]
     private string _errorMessage = string.Empty;
@@ -59,6 +64,20 @@ public partial class UserViewModel : ObservableObject
                 User.Add(i);
             }
         }
+
+        string urlRole = "http://127.0.0.1:8000/api/roles";
+
+        var apiResponse = await _apiServices.GetAllAsync<Role>(urlRole);
+
+        if(apiResponse != null && apiResponse.Data != null)
+        {
+            Roles.Clear();
+
+            foreach(var i in apiResponse.Data)
+            {
+                Roles.Add(i);
+            }
+        }
     }
 
 
@@ -83,7 +102,7 @@ public partial class UserViewModel : ObservableObject
     private void EditUser(User user)
     {
         InputName = user.Username;
-        InputRole = user.Role;
+        InputRole = int.Parse(user.Role);
 
         IsEditMode = true;
         IdYangDiPilih = user.Id;
@@ -94,22 +113,21 @@ public partial class UserViewModel : ObservableObject
     [RelayCommand]
     private async Task SimpanUser()
     {
+        if(InputPassword == string.Empty || InputName == string.Empty || SelectedRole ==null)
+        {
+            ErrorMessage = "Semua field harus diisi.";
+            return;
+        }
         if(IsEditMode == true)
         {
-
-            if(InputPassword == string.Empty || InputName == string.Empty || InputRole == string.Empty)
-            {
-                ErrorMessage = "Semua field harus diisi.";
-                return;
-            }
-
             var userLama = User.FirstOrDefault(i => i.Id == IdYangDiPilih);
+            int roleid = SelectedRole.Id;
 
-            if(userLama != null)
+            if (userLama != null)
             {
                 userLama.Username = InputName;
                 userLama.Password = InputPassword;
-                userLama.Role = InputRole;
+                userLama.RoleId = roleid;
 
                 var index = User.IndexOf(userLama);
                 User[index] = userLama;
@@ -119,28 +137,28 @@ public partial class UserViewModel : ObservableObject
         else
         {
 
-        if (InputPassword == string.Empty || InputName == string.Empty || InputRole == string.Empty)
-        {
-            ErrorMessage = "Semua field harus diisi.";
-            return;
-        }
-
             string endpoint = "http://127.0.0.1:8000/api/users";
 
             var data = new User
             {
                 Username = InputName,
                 Password = InputPassword,
-                Role = InputRole,
+                RoleId = SelectedRole.Id,
             };
 
             var response = await _apiServices.PostAsync<User>(endpoint, data);
 
-            if (response != null && response.Data != null)
+            if (response != null && response.Status == "success")
             {
                 User.Add(response.Data);
 
-                Application.Current.MainPage.DisplayAlert("Berhasil", "Berhasil menambahkan user", "Oke");
+                await Application.Current.MainPage.DisplayAlert("Berhasil", "Berhasil menambahkan user", "Oke");
+
+                await loadDataAsync();
+            }
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("Gagal", "Data gagal di simpan ke Server: ", "Ya");
             }
 
         }
@@ -155,7 +173,7 @@ public partial class UserViewModel : ObservableObject
         InputName = string.Empty;
         InputPassword = string.Empty;
         ErrorMessage = string.Empty;
-        InputRole = string.Empty;
+        SelectedRole = null;
         IsFormVisible = true;
     }
 

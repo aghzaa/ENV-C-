@@ -59,10 +59,25 @@ public partial class RoleViewModel : ObservableObject
     private async Task HapusRole(Role role)
     {
         var IsDelete = await Application.Current.MainPage.DisplayAlert("Konfirmasi", $"Apakah anda yakin ingin mengapus role {role.RoleName}", "Ya", "Tidak");
-        if (IsDelete)
+        
+        if (!IsDelete) return; 
+
+         string endpoint = $"http://127.0.0.1:8000/api/roles/{role.Id}";
+
+         bool response = await _services.DeleteAsync(endpoint);
+
+        if (response)
         {
             Roles.Remove(role);
+
+            await Application.Current.MainPage.DisplayAlert("Berhasil", "Data Berhasil di hapus", "OK");
         }
+        else
+        {
+            await Application.Current.MainPage.DisplayAlert("Gagal", "Data gagal di hapus", "OK");
+
+        }
+
     }
 
     [RelayCommand]
